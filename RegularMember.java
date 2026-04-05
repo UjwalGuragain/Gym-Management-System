@@ -41,3 +41,32 @@ public class RegularMember extends GymMember{
                 return -1;
         }
     }
+
+    //A method to upgrade the plan
+    public String upgradePlan(String newPlan) {
+        if (newPlan == null || newPlan.equalsIgnoreCase(plan)) {
+            return "No upgrade performed.";
+        }
+        if (newPlan.equalsIgnoreCase("Basic")) {
+            plan = "Basic";
+            price = 6500.0;
+        } else if (newPlan.equalsIgnoreCase("Standard")) {
+            plan = "Standard";
+            price = 12500.0;
+        } else if (newPlan.equalsIgnoreCase("Deluxe")) {
+            plan = "Deluxe";
+            price = 18500.0;
+        } else {
+            return "Invalid plan selected.";
+        }
+        return "Plan upgraded to " + plan + ". New price: Rs " + price;
+    }
+    
+    //A method to reset attributes of the regular member to default
+    public void revertRegularMember(String removalReason) {
+        resetMember();
+        this.isEligibleForUpgrade = false;
+        this.plan = "basic";
+        this.price = 6500;
+        this.removalReason = removalReason;
+    }
