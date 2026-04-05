@@ -13,6 +13,7 @@ public class RegularMember extends GymMember{
         super(id, name, location, phone, email, gender, DOB, membershipStartDate);
         this.referralSource = referralSource;
     }
+    
     //Implementing the abstract method from parent class to track attendance and loyalty points of regular members
     @Override
     public void markAttendance() {
@@ -24,5 +25,19 @@ public class RegularMember extends GymMember{
         } else 
         {
             System.out.println("Membership is not active, Activate first.");
+        }
+    }
+    
+    //A method to get the price of various plans
+    public double getPlanPrice(String plan) {
+        switch (plan) {
+            case "basic":
+                return 6500.0;
+            case "standard":
+                return 12500.0;
+            case "deluxe":
+                return 18500.0;
+            default:
+                return -1;
         }
     }
