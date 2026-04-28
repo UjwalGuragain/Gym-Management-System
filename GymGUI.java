@@ -87,6 +87,34 @@ public class GymGUI implements ActionListener {
         fieldLocation = new JTextField();
         fieldLocation.setBounds(200, 110, 200, 25);
         frame.add(fieldLocation);
+        // Phone Input
+        label = new JLabel("Phone:");
+        label.setBounds(30, 150, 150, 25);
+        frame.add(label);
+        fieldPhone = new JTextField();
+        fieldPhone.setBounds(200, 150, 200, 25);
+        frame.add(fieldPhone);
 
+        // Email Input
+        label = new JLabel("Email:");
+        label.setBounds(30, 190, 150, 25);
+        frame.add(label);
+        fieldEmail = new JTextField();
+        fieldEmail.setBounds(200, 190, 200, 25);
+        frame.add(fieldEmail);
 
+        // Gender Input
+        label = new JLabel("Gender:");
+        label.setBounds(30, 230, 150, 25);
+        frame.add(label);
+        maleRadio = new JRadioButton("Male");
+        maleRadio.setBounds(200, 230, 80, 25);
+        femaleRadio = new JRadioButton("Female");
+        femaleRadio.setBounds(290, 230, 80, 25);
+        genderGroup = new ButtonGroup();
+        genderGroup.add(maleRadio);
+        genderGroup.add(femaleRadio);
+        frame.add(maleRadio);
+        frame.add(femaleRadio);
+       
 }
