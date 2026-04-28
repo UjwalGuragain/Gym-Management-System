@@ -14,5 +14,42 @@ public class PremiumMember extends GymMember{
         this.paidAmount = 0;
         this.discountAmount = 0;
     }
-  
+    //Implementing the abstract method from parent class to track attendance and loyalty points of premium members
+    @Override
+    public void markAttendance() {
+        if (activeStatus) {
+            attendance++;
+            loyaltyPoints += 5;
+        }
+        else {
+            System.out.println("Membership is not active, Activate first.");
+        }
+    }
+    
+    //A method to pay due amount, show remaining balance,  update the paid amount and payment status
+    public String payDueAmount(double amount) {
+        if (isFullPayment) {
+            return "Full payment is already completed.";
+        }
+        paidAmount += amount;
+        if (paidAmount > premiumCharge) {
+            return "Payment exceeds the total charge.";
+        }
+        if (paidAmount == premiumCharge) {
+
+            isFullPayment = true;
+        }
+        return "Payment successful. Your Remaining balance is: " + (premiumCharge - paidAmount);
+    }
+    
+    //A method to calculate the discount for Full payment
+    public void calculateDiscount() {
+        if (isFullPayment) {
+            discountAmount = premiumCharge * 0.1;
+            System.out.println("Discountable Amount: " + discountAmount);
+        }
+        else {
+            System.out.println("Full payment is required for the discount.");
+        }
+    }
 }
