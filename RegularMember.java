@@ -70,3 +70,79 @@ public class RegularMember extends GymMember{
         this.price = 6500;
         this.removalReason = removalReason;
     }
+     //A display method that calls the method form parent class to show all details of regular member
+    @Override
+    public void display() {
+        super.display();
+        System.out.println("Plan: " + plan);
+        System.out.println("Price: " + price);
+        if (!removalReason.isEmpty()) {
+            System.out.println("Removal Reason: " + removalReason);
+        }
+    }
+
+    public int getAttendanceLimit() {
+        return attendanceLimit;
+    }
+
+    public boolean isEligibleForUpgrade() {
+        return isEligibleForUpgrade;
+    }
+
+    public String getRemovalReason() {
+        return removalReason;
+    }
+
+    public String getReferralSource() {
+        return referralSource;
+    }
+
+    public String getPlan() {
+        return plan;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public double getPaidAmount() {
+        return paidAmount;
+    }
+
+    public void setPaidAmount(double paidAmount) {
+        this.paidAmount = paidAmount;
+    }
+
+    public void setEligibleForUpgrade(boolean eligibleForUpgrade) {
+        isEligibleForUpgrade = eligibleForUpgrade;
+    }
+
+    public void setRemovalReason(String removalReason) {
+        this.removalReason = removalReason;
+    }
+
+    public void setReferralSource(String referralSource) {
+        this.referralSource = referralSource;
+    }
+
+    public void setPlan(String plan) {
+        this.plan = plan;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    // Optional: add a payDueAmount method for RegularMember
+    public String payDueAmount(double amount) {
+        if (paidAmount >= price) {
+            return "Full payment is already completed.";
+        }
+        paidAmount += amount;
+        if (paidAmount > price) {
+            paidAmount -= amount; // revert
+            return "Payment exceeds the total charge.";
+        }
+        return "Payment successful. Your Remaining balance is: " + (price - paidAmount);
+    }
+ }
