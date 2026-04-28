@@ -61,5 +61,32 @@ public class GymGUI implements ActionListener {
         create();
         frame.setVisible(true);
     }
-  
+   private void create() {
+        JLabel label;
+
+        // ID Input
+        label = new JLabel("ID:");
+        label.setBounds(30, 30, 150, 25);
+        frame.add(label);
+        fieldId = new JTextField();
+        fieldId.setBounds(200, 30, 200, 25);
+        frame.add(fieldId);
+
+        // Name Input
+        label = new JLabel("Name:");
+        label.setBounds(30, 70, 150, 25);
+        frame.add(label);
+        fieldName = new JTextField();
+        fieldName.setBounds(200, 70, 200, 25);
+        frame.add(fieldName);
+
+        // Location Input
+        label = new JLabel("Location:");
+        label.setBounds(30, 110, 150, 25);
+        frame.add(label);
+        fieldLocation = new JTextField();
+        fieldLocation.setBounds(200, 110, 200, 25);
+        frame.add(fieldLocation);
+
+
 }
