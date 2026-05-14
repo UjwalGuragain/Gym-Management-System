@@ -348,4 +348,144 @@ public class GymGUI implements ActionListener {
         frame.add(btnReadFromFile);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent a) {
+        try {
+            if (a.getSource() == btnAddRegular) {
+                regularmember();
+            } else if (a.getSource() == btnAddPremium) {
+                premiummember();
+            } else if (a.getSource() == btnDisplay) {
+                display();
+            } else if (a.getSource() == btnActivate) {
+                activate();
+            } else if (a.getSource() == btnDeactivate) {
+                deactivate();
+            } else if (a.getSource() == btnMarkAttendance) {
+                markAttendance();
+            } else if (a.getSource() == btnCalculateDiscount) {
+                calculateDiscount();
+            } else if (a.getSource() == btnRevertRegular) {
+                revertRegularMember();
+            } else if (a.getSource() == btnRevertPremium) {
+                revertPremiumMember();
+            } else if (a.getSource() == btnPayDue) {
+                payDueAmount();
+            } else if (a.getSource() == btnClear) {
+                clearFields();
+            } else if (a.getSource() == btnSaveToFile) {
+                saveToFile();
+            } else if (a.getSource() == btnReadFromFile) {
+                readFromFile();
+            } else if (a.getSource() == btnUpgradePlan) {
+                upgradePlan();
+            }
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(frame, "An Error Occurred: " + ex.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void regularmember() {
+        try {
+            int id = Integer.parseInt(fieldId.getText().trim());
+
+            // Check for duplicate ID
+            if (isDuplicateId(id)) {
+                JOptionPane.showMessageDialog(frame, "Member ID already exists! Please use a unique ID.", "Duplicate ID", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String gender = maleRadio.isSelected() ? "Male" : "Female";
+            String dob = DOB_Day.getSelectedItem() + "/" + DOB_Month.getSelectedItem() + "/" + DOB_Year.getSelectedItem();
+            String membershipStart = startdate.getSelectedItem() + "/" + startmonth.getSelectedItem() + "/" + startyear.getSelectedItem();
+
+            RegularMember member = new RegularMember(
+                    id, fieldName.getText(), fieldLocation.getText(), fieldPhone.getText(),
+                    fieldEmail.getText(), gender, dob, membershipStart,
+                    fieldReferralSource.getText());
+
+            // Set plan and price
+            String plan = (String) planForRegularBox.getSelectedItem();
+            member.setPlan(plan);
+            if (plan.equalsIgnoreCase("Basic")) member.setPrice(6500.0);
+            else if (plan.equalsIgnoreCase("Standard")) member.setPrice(12500.0);
+            else if (plan.equalsIgnoreCase("Deluxe")) member.setPrice(18500.0);
+
+            // Set paid amount if entered
+            String paidText = fieldPaidAmount.getText().trim();
+            if (!paidText.isEmpty()) {
+                try {
+                    double paid = Double.parseDouble(paidText);
+                    if (paid < 0) {
+                        JOptionPane.showMessageDialog(frame, "Paid amount cannot be negative!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    if (paid > 0) {
+                        member.setPaidAmount(paid);
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(frame, "Invalid paid amount entered!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+
+            memberList.add(member);
+            JOptionPane.showMessageDialog(frame, "Regular Member added successfully.");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(frame, "Please enter valid details!", "Invalid Input",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void premiummember() {
+        try {
+            int id = Integer.parseInt(fieldId.getText().trim());
+
+            // Check for duplicate ID
+            if (isDuplicateId(id)) {
+                JOptionPane.showMessageDialog(frame, "Member ID already exists! Please use a unique ID.", "Duplicate ID", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Prevent adding Premium Member if membershipTypeBox is "Regular"
+            if (membershipTypeBox.getSelectedItem().toString().equalsIgnoreCase("Regular")) {
+                JOptionPane.showMessageDialog(frame, "Cannot add Premium Member when Membership Type is set to Regular.", "Invalid Operation", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String gender = maleRadio.isSelected() ? "Male" : "Female";
+            String dob = DOB_Day.getSelectedItem() + "/" + DOB_Month.getSelectedItem() + "/" + DOB_Year.getSelectedItem();
+            String membershipStart = startdate.getSelectedItem() + "/" + startmonth.getSelectedItem() + "/" + startyear.getSelectedItem();
+
+            PremiumMember member = new PremiumMember(
+                    id, fieldName.getText(), fieldLocation.getText(), fieldPhone.getText(),
+                    fieldEmail.getText(), gender, dob, membershipStart, fieldTrainerName.getText());
+
+            // Set paid amount from the field
+            String paidText = fieldPaidAmount.getText().trim();
+            if (!paidText.isEmpty()) {
+                try {
+                    double paid = Double.parseDouble(paidText);
+                    if (paid < 0) {
+                        JOptionPane.showMessageDialog(frame, "Paid amount cannot be negative!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    if (paid > 0) {
+                        member.setPaidAmount(paid);
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(frame, "Invalid paid amount entered!", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+
+            memberList.add(member);
+            JOptionPane.showMessageDialog(frame, "Premium Member added successfully.");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(frame, "Please enter valid details!", "Invalid Input",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 }
