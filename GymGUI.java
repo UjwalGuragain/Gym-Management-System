@@ -117,4 +117,135 @@ public class GymGUI implements ActionListener {
         frame.add(maleRadio);
         frame.add(femaleRadio);
        
+       // DOB Input
+        label = new JLabel("DOB:");
+        label.setBounds(30, 270, 150, 25);
+        frame.add(label);
+        String[] years = new String[201];
+        for (int i = 0; i <= 200; i++) {
+            years[i] = String.valueOf(2026 - i);
+        }
+        DOB_Year = new JComboBox<>(years);
+        DOB_Year.setBounds(200, 270, 80, 25);
+        frame.add(DOB_Year);
+
+        DOB_Month = new JComboBox<>(new String[]{
+            "January", "February", "March", "April", "May", "June", "July", "August", "September",
+            "October", "November", "December"
+        });
+        DOB_Month.setBounds(280, 270, 100, 25);
+        frame.add(DOB_Month);
+
+        DOB_Day = new JComboBox<>();
+        for (int i = 1; i <= 32; i++) {
+            DOB_Day.addItem(String.valueOf(i));
+        }
+        DOB_Day.setBounds(380, 270, 80, 25);
+        frame.add(DOB_Day);
+
+        // Membership Start Date Input
+        label = new JLabel("Membership Start Date:");
+        label.setBounds(900, 150, 150, 25);
+        frame.add(label);
+        String[] year = new String[201];
+        for (int i = 0; i <= 200; i++) {
+            year[i] = String.valueOf(2026 - i);
+        }
+        startyear = new JComboBox<>(year);
+        startyear.setBounds(1080, 150, 80, 25);
+        frame.add(startyear);
+
+        startmonth = new JComboBox<>(new String[]{
+            "January", "February", "March", "April", "May", "June", "July", "August", "September",
+            "October", "November", "December"
+        });
+        startmonth.setBounds(1160, 150, 100, 25);
+        frame.add(startmonth);
+
+        startdate = new JComboBox<>();
+        for (int i = 1; i <= 32; i++) {
+            startdate.addItem(String.valueOf(i));
+        }
+        startdate.setBounds(1260, 150, 50, 25);
+        frame.add(startdate);
+
+        // Referral Source Input
+        label = new JLabel("Referral Source:");
+        label.setBounds(900, 190, 150, 25);
+        frame.add(label);
+        fieldReferralSource = new JTextField();
+        fieldReferralSource.setBounds(1080, 190, 200, 25);
+        frame.add(fieldReferralSource);
+
+        // Trainer Name Input
+        label = new JLabel("Trainer's Name:");
+        label.setBounds(900, 230, 150, 25);
+        frame.add(label);
+        fieldTrainerName = new JTextField();
+        fieldTrainerName.setBounds(1080, 230, 200, 25);
+        frame.add(fieldTrainerName);
+
+        // Membership Type Label and ComboBox
+        JLabel membershipTypeLabel = new JLabel("Membership Type:");
+        membershipTypeLabel.setBounds(30, 310, 150, 25);
+        frame.add(membershipTypeLabel);
+
+        membershipTypeBox = new JComboBox<>(new String[] { "Regular", "Premium" });
+        membershipTypeBox.setBounds(200, 310, 150, 25);
+        frame.add(membershipTypeBox);
+
+        // Plan for Regular Label and ComboBox
+        JLabel planForRegularLabel = new JLabel("Plan for Regular:");
+        planForRegularLabel.setBounds(30, 350, 150, 25);
+        frame.add(planForRegularLabel);
+
+        planForRegularBox = new JComboBox<>(new String[] { "Basic", "Standard", "Deluxe" });
+        planForRegularBox.setBounds(200, 350, 150, 25);
+        frame.add(planForRegularBox);
+
+        // Regular Plan Price Field
+        JLabel regularPlanPriceLabel = new JLabel("Regular plan price:");
+        regularPlanPriceLabel.setBounds(900, 30, 150, 30);
+        frame.add(regularPlanPriceLabel);
+
+        priceField = new JTextField("Rs 6500");
+        priceField.setBounds(1080, 30, 200, 30);
+        priceField.setEditable(false);
+        priceField.setHorizontalAlignment(JTextField.CENTER);
+        priceField.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 18));
+        frame.add(priceField);
+
+        // Show/hide Plan for Regular based on Membership Type
+        planForRegularLabel.setVisible(true);
+        planForRegularBox.setVisible(true);
+
+        membershipTypeBox.addActionListener(e -> {
+            boolean isRegular = membershipTypeBox.getSelectedItem().equals("Regular");
+            planForRegularLabel.setVisible(isRegular);
+            planForRegularBox.setVisible(isRegular);
+            // Set price for Regular or clear for Premium
+            if (isRegular) {
+                String plan = (String) planForRegularBox.getSelectedItem();
+                if (plan.equals("Basic"))
+                    priceField.setText("Rs 6500");
+                else if (plan.equals("Standard"))
+                    priceField.setText("Rs 12500");
+                else if (plan.equals("Deluxe"))
+                    priceField.setText("Rs 18500");
+            } else {
+                priceField.setText("");
+            }
+        });
+
+        // Update price when Plan for Regular changes
+        planForRegularBox.addActionListener(e -> {
+            String plan = (String) planForRegularBox.getSelectedItem();
+            if (plan.equals("Basic"))
+                priceField.setText("Rs 6500");
+            else if (plan.equals("Standard"))
+                priceField.setText("Rs 12500");
+            else if (plan.equals("Deluxe"))
+                priceField.setText("Rs 18500");
+        });
+
 }
