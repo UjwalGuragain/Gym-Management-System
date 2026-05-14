@@ -587,5 +587,213 @@ public class GymGUI implements ActionListener {
         }
     }
 
+    private void markAttendance() {
+        try {
+            int id = findMemberId("Mark Attendance");
+            if (id == -1)
+                return;
+            for (GymMember member : memberList) {
+                if (member.id == id) {
+                    if (member.activeStatus) {
+                        member.markAttendance();
+                        JOptionPane.showMessageDialog(frame, "Attendance marked for member ID: " + id);
+                    } else {
+                        JOptionPane.showMessageDialog(frame, "Membership is not active. Cannot mark attendance!",
+                                "Warning", JOptionPane.WARNING_MESSAGE);
+                    }
+                    return;
+                }
+            }
+            JOptionPane.showMessageDialog(frame, "No member found with ID: " + id, "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(frame, "Please enter a valid ID to mark attendance!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void calculateDiscount() {
+        try {
+            int id = findMemberId("Calculate Discount");
+            if (id == -1)
+                return;
+
+            for (GymMember member : memberList) {
+                if (member.id == id && member instanceof PremiumMember) {
+                    PremiumMember premiumMember = (PremiumMember) member;
+                    double premiumCharge = premiumMember.getPremiumCharge();
+                    double paid = premiumMember.getPaidAmount();
+
+                    if (paid >= premiumCharge) {
+                        double discount = premiumCharge * 0.10;
+                        double remaining = premiumCharge - discount - paid;
+
+                        // If discount is applicable, show message and update paid amount if needed
+                        JOptionPane.showMessageDialog(frame,
+                            "Full payment detected!\n" +
+                            "Discount (10%): Rs " + discount +
+                            "\nTotal Paid: Rs " + paid +
+                            "\nRemaining Amount after discount: Rs " + (remaining < 0 ? 0 : remaining),
+                            "Discount Calculated", JOptionPane.INFORMATION_MESSAGE
+                        );
+                    } else {
+                        JOptionPane.showMessageDialog(frame,
+                            "Discount is only available after full payment (Rs 50000)!\n" +
+                            "Current Paid Amount: Rs " + paid,
+                            "Discount Not Applicable", JOptionPane.WARNING_MESSAGE
+                        );
+                    }
+                    return;
+                }
+            }
+            JOptionPane.showMessageDialog(frame, "No Premium Member found with ID: " + id, "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(frame, "Error occurred while calculating discount!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void revertPremiumMember() {
+        try {
+            int id = findMemberId("Revert Premium Member");
+            if (id == -1)
+                return;
+
+            for (GymMember member : memberList) {
+                if (member.id == id && member instanceof PremiumMember) {
+                    PremiumMember premiumMember = (PremiumMember) member;
+                    premiumMember.revertPremiumMember();
+                    premiumMember.markAsReverted();
+                    JOptionPane.showMessageDialog(frame, "Premium Member reverted successfully for ID: " + id);
+                    return;
+                }
+            }
+            JOptionPane.showMessageDialog(frame, "No Premium Member found with ID: " + id, "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(frame, "Error occurred while reverting the premium member!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void revertRegularMember() {
+        try {
+            int id = findMemberId("Revert Regular Member");
+            if (id == -1)
+                return;
+
+            for (GymMember member : memberList) {
+                if (member.id == id && member instanceof RegularMember) {
+                    String reason = JOptionPane.showInputDialog("Enter Reason for Reverting:");
+                    RegularMember regularMember = (RegularMember) member;
+                    regularMember.revertRegularMember(reason);
+                    regularMember.markAsReverted();
+                    JOptionPane.showMessageDialog(frame, "Regular Member reverted successfully for ID: " + id);
+                    return;
+                }
+            }
+            JOptionPane.showMessageDialog(frame, "No Regular Member found with ID: " + id, "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(frame, "Error occurred while reverting the regular member!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private int findMemberId(String action) {
+        try {
+            String input = JOptionPane.showInputDialog("Enter Member ID to " + action + ":");
+            return input != null ? Integer.parseInt(input.trim()) : -1;
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(frame, "Invalid ID provided!", "Error", JOptionPane.ERROR_MESSAGE);
+            return -1;
+        }
+    }
+
+    private void clearFields() {
+        try {
+            if (fieldId != null)
+                fieldId.setText("");
+            if (fieldName != null)
+                fieldName.setText("");
+            if (fieldLocation != null)
+                fieldLocation.setText("");
+            if (fieldPhone != null)
+                fieldPhone.setText("");
+            if (fieldEmail != null)
+                fieldEmail.setText("");
+            if (fieldReferralSource != null)
+                fieldReferralSource.setText("");
+            if (fieldTrainerName != null)
+                fieldTrainerName.setText("");
+            if (fieldPaidAmount != null)
+                fieldPaidAmount.setText("");
+            if (fieldRemovalReason != null)
+                fieldRemovalReason.setText("");
+
+            if (genderGroup != null) {
+                genderGroup.clearSelection();
+            }
+
+            // Reset combo boxes
+            if (DOB_Year != null) DOB_Year.setSelectedIndex(0);
+            if (DOB_Month != null) DOB_Month.setSelectedIndex(0);
+            if (DOB_Day != null) DOB_Day.setSelectedIndex(0);
+            if (startyear != null) startyear.setSelectedIndex(0);
+            if (startmonth != null) startmonth.setSelectedIndex(0);
+            if (startdate != null) startdate.setSelectedIndex(0);
+            if (membershipTypeBox != null) membershipTypeBox.setSelectedIndex(0);
+            if (planForRegularBox != null) planForRegularBox.setSelectedIndex(0);
+
+            if (priceField != null) priceField.setText("Rs 6500");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(frame, "An Error Occurred: " + e.getMessage(), "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Save all member details to MemberDetail.txt using FileWriter
+    private void saveToFile() {
+        FileWriter fw = null;
+        try {
+            fw = new FileWriter("MemberDetail.txt");
+            for (GymMember member : memberList) {
+                if (member.marksAsReverted()) continue;
+                String membershipType = (member instanceof RegularMember) ? "Regular" : "Premium";
+                String plan = (member instanceof RegularMember) ? ((RegularMember) member).getPlan() : "Premium";
+                fw.write("Membership Type: " + membershipType + "\n");
+                fw.write("Membership Plan: " + plan + "\n");
+                fw.write("ID: " + member.id + "\n");
+                fw.write("Name: " + member.name + "\n");
+                fw.write("Gender: " + member.gender + "\n");
+                fw.write("DOB: " + member.DOB + "\n");
+                fw.write("Location: " + member.location + "\n");
+                fw.write("Phone: " + member.phone + "\n");
+                fw.write("Email: " + member.email + "\n");
+                fw.write("Membership Start: " + member.membershipStartDate + "\n");
+                fw.write("Attendance: " + member.attendance + "\n");
+                fw.write("Loyalty Points: " + member.loyaltyPoints + "\n");
+                fw.write("Status: " + (member.activeStatus ? "Active" : "Inactive") + "\n");
+                if (member instanceof RegularMember) {
+                    RegularMember rm = (RegularMember) member;
+                    fw.write("Paid Amount: " + rm.getPaidAmount() + "\n");
+                    fw.write("Referral Source: " + rm.getReferralSource() + "\n");
+                } else if (member instanceof PremiumMember) {
+                    PremiumMember pm = (PremiumMember) member;
+                    fw.write("Paid Amount: " + pm.getPaidAmount() + "\n");
+                    fw.write("Trainer Name: " + pm.getPersonalTrainer() + "\n");
+                }
+                fw.write("-----\n");
+            }
+            fw.close();
+            JOptionPane.showMessageDialog(frame, "Member details saved to MemberDetail.txt");
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(frame, "Error saving to file: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try { if (fw != null) fw.close(); } catch (Exception ignore) {}
+        }
+    }
+
     
 }
