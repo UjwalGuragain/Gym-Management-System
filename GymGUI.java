@@ -488,4 +488,104 @@ public class GymGUI implements ActionListener {
         }
     }
 
+    private void display() {
+        JFrame displayFrame = new JFrame("Gym Members");
+        displayFrame.setSize(600, 700);
+        displayFrame.setLocationRelativeTo(frame);
+
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+
+        boolean hasMembers = false;
+
+        for (GymMember member : memberList) {
+            if (member.marksAsReverted())
+                continue;
+
+            hasMembers = true;
+
+            JPanel memberPanel = new JPanel(new GridLayout(0, 1));
+            memberPanel.setBorder(BorderFactory.createTitledBorder(
+                    member.getClass().getSimpleName() + " - ID: " + member.id));
+
+            // Membership Type
+            String membershipType = (member instanceof RegularMember) ? "Regular" : "Premium";
+            memberPanel.add(new JLabel("Membership Type: " + membershipType));
+
+            // Membership Plan
+            String plan = (member instanceof RegularMember) ? ((RegularMember) member).getPlan() : "Premium";
+            memberPanel.add(new JLabel("Membership Plan: " + plan));
+
+            memberPanel.add(new JLabel("Name: " + member.name));
+            memberPanel.add(new JLabel("Phone: " + member.phone));
+            memberPanel.add(new JLabel("Email: " + member.email));
+            memberPanel.add(new JLabel("Location: " + member.location));
+            memberPanel.add(new JLabel("Gender: " + member.gender));
+            memberPanel.add(new JLabel("DOB: " + member.DOB));
+            memberPanel.add(new JLabel("Membership Start: " + member.membershipStartDate));
+            memberPanel.add(new JLabel("Attendance: " + member.attendance));
+            memberPanel.add(new JLabel("Loyalty Points: " + member.loyaltyPoints));
+            memberPanel.add(new JLabel("Status: " + (member.activeStatus ? "Active" : "Inactive")));
+
+            if (member instanceof RegularMember) {
+                RegularMember rm = (RegularMember) member;
+                memberPanel.add(new JLabel("Paid Amount: " + rm.getPaidAmount()));
+                memberPanel.add(new JLabel("Referral Source: " + rm.getReferralSource()));
+            } else if (member instanceof PremiumMember) {
+                PremiumMember pm = (PremiumMember) member;
+                memberPanel.add(new JLabel("Paid Amount: " + pm.getPaidAmount()));
+                memberPanel.add(new JLabel("Trainer Name: " + pm.getPersonalTrainer()));
+            }
+
+            contentPanel.add(memberPanel);
+        }
+
+        if (!hasMembers) {
+            contentPanel.add(new JLabel("No Members to Display."));
+        }
+
+        JScrollPane scrollPane = new JScrollPane(contentPanel);
+        displayFrame.add(scrollPane);
+        displayFrame.setVisible(true);
+    }
+
+    private void activate() {
+        try {
+            int id = findMemberId("Activate Membership");
+            if (id == -1)
+                return;
+            for (GymMember member : memberList) {
+                if (member.id == id) {
+                    member.activateMembership();
+                    JOptionPane.showMessageDialog(frame, "Membership activated for member ID: " + id);
+                    return;
+                }
+            }
+            JOptionPane.showMessageDialog(frame, "No member found with ID: " + id, "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(frame, "Please enter a valid ID to activate membership!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void deactivate() {
+        try {
+            int id = findMemberId("Deactivate Membership");
+            if (id == -1)
+                return;
+            for (GymMember member : memberList) {
+                if (member.id == id) {
+                    member.deactivateMembership();
+                    JOptionPane.showMessageDialog(frame, "Membership deactivated for member ID: " + id);
+                    return;
+                }
+            }
+            JOptionPane.showMessageDialog(frame, "No member found with ID: " + id, "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(frame, "Please enter a valid ID to deactivate membership!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    
 }
