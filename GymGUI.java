@@ -248,4 +248,104 @@ public class GymGUI implements ActionListener {
                 priceField.setText("Rs 18500");
         });
 
+        // Paid Amount Input
+        label = new JLabel("Paid Amount:");
+        label.setBounds(900, 110, 100, 30);
+        frame.add(label);
+        fieldPaidAmount = new JTextField();
+        fieldPaidAmount.setBounds(1080, 110, 200, 30);
+        frame.add(fieldPaidAmount);
+
+        // Removal Reason Input
+        label = new JLabel("Removal Reason:");
+        label.setBounds(900, 270, 150, 25);
+        frame.add(label);
+        fieldRemovalReason = new JTextField();
+        fieldRemovalReason.setBounds(1080, 270, 200, 25);
+        frame.add(fieldRemovalReason);
+        JLabel premiumlabel = new JLabel("Premium Plan Price:");
+        premiumlabel.setBounds(900, 70, 150, 30);
+        frame.add(premiumlabel);
+
+        JTextField premiumpriceField = new JTextField("Rs 50000");
+        premiumpriceField.setBounds(1080, 70, 200, 30);
+        premiumpriceField.setEditable(false);
+        premiumpriceField.setHorizontalAlignment(JTextField.CENTER);
+        premiumpriceField.setFont(new java.awt.Font("Arial", java.awt.Font.PLAIN, 18));
+        frame.add(premiumpriceField);
+
+        // Buttons
+        btnAddRegular = new JButton("Add Regular Member");
+        btnAddRegular.setBounds(30, 480, 200, 30);
+        btnAddRegular.addActionListener(this);
+        frame.add(btnAddRegular);
+
+        btnAddPremium = new JButton("Add Premium Member");
+        btnAddPremium.setBounds(1080, 480, 200, 30);
+        btnAddPremium.addActionListener(this);
+        frame.add(btnAddPremium);
+
+        btnDisplay = new JButton("Display Members");
+        btnDisplay.setBounds(30, 560, 200, 30);
+        btnDisplay.addActionListener(this);
+        frame.add(btnDisplay);
+
+        btnActivate = new JButton("Activate Membership");
+        btnActivate.setBounds(30, 520, 200, 30);
+        btnActivate.addActionListener(this);
+        frame.add(btnActivate);
+
+        btnDeactivate = new JButton("Deactivate Membership");
+        btnDeactivate.setBounds(1080, 560, 200, 30);
+        btnDeactivate.addActionListener(this);
+        frame.add(btnDeactivate);
+
+        btnMarkAttendance = new JButton("Mark Attendance");
+        btnMarkAttendance.setBounds(1080, 520, 200, 30);
+        btnMarkAttendance.addActionListener(this);
+        frame.add(btnMarkAttendance);
+
+        btnUpgradePlan = new JButton("Upgrade Plan");
+        btnUpgradePlan.setBounds(550, 480, 200, 30);
+        btnUpgradePlan.addActionListener(this);
+        frame.add(btnUpgradePlan);
+
+        btnCalculateDiscount = new JButton("Calculate Discount");
+        btnCalculateDiscount.setBounds(1080, 600, 200, 30);
+        btnCalculateDiscount.addActionListener(this);
+        frame.add(btnCalculateDiscount);
+
+        btnRevertRegular = new JButton("Revert Regular Member");
+        btnRevertRegular.setBounds(30, 640, 200, 30);
+        btnRevertRegular.addActionListener(this);
+        frame.add(btnRevertRegular);
+
+        btnRevertPremium = new JButton("Revert Premium Member");
+        btnRevertPremium.setBounds(30, 600, 200, 30);
+        btnRevertPremium.addActionListener(this);
+        frame.add(btnRevertPremium);
+
+        btnPayDue = new JButton("Pay Due Amount");
+        btnPayDue.setBounds(550, 520, 200, 30);
+        btnPayDue.addActionListener(this);
+        frame.add(btnPayDue);
+
+        btnClear = new JButton("Clear Fields");
+        btnClear.setBounds(1080, 640, 200, 30);
+        btnClear.addActionListener(this);
+        frame.add(btnClear);
+
+        // Add Save to File button
+        btnSaveToFile = new JButton("Save to File");
+        btnSaveToFile.setBounds(550, 560, 200, 30);
+        btnSaveToFile.addActionListener(this);
+        frame.add(btnSaveToFile);
+
+        // Add Read from File button
+        btnReadFromFile = new JButton("Read from File");
+        btnReadFromFile.setBounds(550, 600, 200, 30);
+        btnReadFromFile.addActionListener(this);
+        frame.add(btnReadFromFile);
+    }
+
 }
